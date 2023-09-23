@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voice Assistant Welcome</title>
+</head>
+<body>
+    <h1>Welcome to Our Website</h1>
+    <p id="welcomeMessage">Hello! How can I assist you today?</p>
+
+    <button id="speakButton">Speak</button>
+
+    <script>
+        // JavaScript code will go here
+    
+    const welcomeMessage = document.getElementById('welcomeMessage');
+    const speakButton = document.getElementById('speakButton');
+
+    if ('speechSynthesis' in window && 'SpeechRecognition' in window) {
+        const recognition = new window.SpeechRecognition();
+        const synth = window.speechSynthesis;
+
+        speakButton.addEventListener('click', () => {
+            // Start voice recognition
+            recognition.start();
+        });
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            welcomeMessage.textContent = 'You said: ' + transcript;
+
+            // Respond with a voice message
+            const response = new SpeechSynthesisUtterance('You said: ' + transcript);
+            synth.speak(response);
+        };
+    } else {
+        alert('Web Speech API is not supported in your browser.');
+    }
+</script>
+
+</body>
+</html>
